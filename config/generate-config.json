@@ -20,7 +20,6 @@
             "mysql": [
                 "gd",
                 "imagick",
-                "mcrypt",
                 "mysqli",
                 "opcache",
                 "pdo_mysql",
@@ -29,7 +28,6 @@
             "pgsql": [
                 "gd",
                 "imagick",
-                "mcrypt",
                 "opcache",
                 "pdo_pgsql",
                 "pgsql",
@@ -49,7 +47,6 @@
                 "imagick",
                 "imap",
                 "ldap",
-                "mcrypt",
                 "memcached",
                 "mongodb",
                 "mysqli",

@@ -122,7 +122,6 @@ php bin/zbpimage generator:publish
 | imagick   | ✓       | ✓       | ✓       |
 | imap      |         |         | ✓       |
 | ldap      |         |         | ✓       |
-| mcrypt    | ✓       | ✓       | ✓       |
 | memcached |         |         | ✓       |
 | mongodb   |         |         | ✓       |
 | mysqli    | ✓       |         | ✓       |

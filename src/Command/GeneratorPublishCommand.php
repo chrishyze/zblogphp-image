@@ -60,10 +60,10 @@ class GeneratorPublishCommand extends Command
         }
 
         $presetExtensions = [
-            'mysql' => ['gd', 'imagick', 'mcrypt', 'mysqli', 'opcache', 'pdo_mysql', 'redis'],
-            'pgsql' => ['gd', 'imagick', 'mcrypt', 'opcache', 'pdo_pgsql', 'pgsql', 'redis'],
+            'mysql' => ['gd', 'imagick', 'mysqli', 'opcache', 'pdo_mysql', 'redis'],
+            'pgsql' => ['gd', 'imagick', 'opcache', 'pdo_pgsql', 'pgsql', 'redis'],
             'dev' => ['amqp', 'apcu', 'bcmath', 'bz2', 'csv', 'event', 'exif', 'gd', 'gnupg', 'grpc', 'imagick',
-                'imap', 'ldap', 'mcrypt', 'memcached', 'mongodb', 'mysqli', 'oauth', 'opcache', 'pcntl', 'pdo_mysql',
+                'imap', 'ldap', 'memcached', 'mongodb', 'mysqli', 'oauth', 'opcache', 'pcntl', 'pdo_mysql',
                 'pdo_pgsql', 'pgsql', 'protobuf', 'redis', 'sockets', 'ssh2', 'swoole', 'xdebug', 'yaml', 'zip', 'zstd'],
         ];
         foreach (array_keys($presetExtensions) as $key) {

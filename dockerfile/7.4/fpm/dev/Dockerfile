@@ -18,6 +18,6 @@ RUN set -ex &&\
     unzip -o /usr/local/src/zblogphp.zip -d /var/www/zblogphp &&\
     chown -R www-data:www-data /var/www/zblogphp &&\
     chmod -R 0755 /var/www/zblogphp
-RUN install-php-extensions amqp apcu bcmath bz2 csv event exif gd gnupg grpc imagick imap ldap mcrypt memcached mongodb mysqli oauth opcache pcntl pdo_mysql pdo_pgsql pgsql protobuf redis sockets ssh2 swoole xdebug yaml zip zstd
+RUN install-php-extensions amqp apcu bcmath bz2 csv event exif gd gnupg grpc imagick imap ldap memcached mongodb mysqli oauth opcache pcntl pdo_mysql pdo_pgsql pgsql protobuf redis sockets ssh2 swoole xdebug yaml zip zstd
 
 WORKDIR /var/www/zblogphp

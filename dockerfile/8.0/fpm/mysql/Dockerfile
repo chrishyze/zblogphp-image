@@ -18,6 +18,6 @@ RUN set -ex &&\
     unzip -o /usr/local/src/zblogphp.zip -d /var/www/zblogphp &&\
     chown -R www-data:www-data /var/www/zblogphp &&\
     chmod -R 0755 /var/www/zblogphp
-RUN install-php-extensions gd imagick mcrypt mysqli opcache pdo_mysql redis
+RUN install-php-extensions gd imagick mysqli opcache pdo_mysql redis
 
 WORKDIR /var/www/zblogphp
