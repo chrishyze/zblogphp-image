@@ -1,0 +1,20 @@
+#!/usr/bin/env php
+<?php
+/**
+ * This file is part of zblogphp-image.
+ *
+ * @author  chrishyze <chrishyze@gmail.com>
+ * @link    https://github.com/chrishyze/zblogphp-image
+ * @license https://github.com/chrishyze/zblogphp-image/blob/master/LICENSE
+ */
+
+require __DIR__.'/../vendor/autoload.php';
+
+use Symfony\Component\Console\Application;
+use ZblogPhpImage\Command\GeneratorPublishCommand;
+
+$application = new Application();
+
+$application->add(new GeneratorPublishCommand());
+
+$application->run();

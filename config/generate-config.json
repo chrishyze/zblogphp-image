@@ -1,0 +1,74 @@
+{
+    "php": {
+        "versions": [
+            "7.4",
+            "8.0",
+            "8.1",
+            "8.2"
+        ],
+        "tags": [
+            "fpm",
+            "fpm-alpine",
+            "cli",
+            "cli-alpine"
+        ],
+        "packages": {
+            "debian": [],
+            "alpine": []
+        },
+        "extensions": {
+            "mysql": [
+                "gd",
+                "imagick",
+                "mcrypt",
+                "mysqli",
+                "opcache",
+                "pdo_mysql",
+                "redis"
+            ],
+            "pgsql": [
+                "gd",
+                "imagick",
+                "mcrypt",
+                "opcache",
+                "pdo_pgsql",
+                "pgsql",
+                "redis"
+            ],
+            "dev": [
+                "amqp",
+                "apcu",
+                "bcmath",
+                "bz2",
+                "csv",
+                "event",
+                "exif",
+                "gd",
+                "gnupg",
+                "grpc",
+                "imagick",
+                "imap",
+                "ldap",
+                "mcrypt",
+                "memcached",
+                "mongodb",
+                "mysqli",
+                "oauth",
+                "opcache",
+                "pcntl",
+                "pdo_mysql",
+                "pdo_pgsql",
+                "pgsql",
+                "protobuf",
+                "redis",
+                "sockets",
+                "ssh2",
+                "swoole",
+                "xdebug",
+                "yaml",
+                "zip",
+                "zstd"
+            ]
+        }
+    }
+}

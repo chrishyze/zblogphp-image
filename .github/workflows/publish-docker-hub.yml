@@ -1,0 +1,38 @@
+name: Publish to Docker Hub
+
+on:
+  push:
+    branches:
+      - "publish"
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Build and Push
+        run: |
+          readarray -d '' files < <(find ./dockerfile -type f -name Dockerfile -print0)
+          for i in "${files[@]}"; do
+            file_path=$(dirname "$i")
+            tag=$(echo "$file_path" | sed "s#./dockerfile/##g" | sed "s#/mysql##g" | sed "s#/#-#g")
+            echo "Building tag: $tag"
+            image_id=$(docker buildx build -q --platform linux/amd64,linux/arm64,linux/arm/v7 -t "${{ secrets.DOCKERHUB_USERNAME }}/zblogphp:$tag" -f "$i" --push .)
+            if [ "$tag" = "fpm-8.1-alpine" ]; then
+              docker tag "$image_id" "${{ secrets.DOCKERHUB_USERNAME }}/zblogphp:latest"
+            fi
+          done
