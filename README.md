@@ -99,7 +99,7 @@
 
 ### 自行构建镜像
 
-以下命令将根据预设配置 `config/generate-config.json`，批量生成 Dockerfile：
+以下命令将根据预设配置 `config/generate-publish.json`，批量生成 Dockerfile：
 
 ```shell
 php bin/zbpimage generator:publish
@@ -157,7 +157,7 @@ RUN 自定义构建步骤...
 
 #### 方案二
 
-使用本项目，修改配置文件 `config/generate-config.json` 以生成自定义 PHP 版本和扩展套件的 Dockerfile。  
+使用本项目，修改配置文件 `config/generate-publish.json` 以生成自定义 PHP 版本和扩展套件的 Dockerfile。  
 
 ## License
 

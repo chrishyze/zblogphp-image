@@ -38,9 +38,9 @@ class GeneratorPublishCommand extends Command
         if ($fs->exists($projectDir.'/dockerfile')) {
             $fs->remove($projectDir.'/dockerfile');
         }
-        $fs->mkdir($projectDir, 0777);
+        $fs->mkdir($projectDir.'/dockerfile', 0777);
 
-        $configPath = $projectDir.'/config/generate-config.json';
+        $configPath = $projectDir.'/config/generate-publish.json';
         if (!is_readable($configPath)) {
             $output->writeln('Config file '.$configPath.' is not readable');
 
