@@ -1,6 +1,8 @@
 # Z-BlogPHP Image
 
-基于最新的 Z-BlogPHP 源码构建容器镜像。  
+[![Publish to Docker Hub](https://github.com/chrishyze/zblogphp-image/actions/workflows/publish-docker-hub.yml/badge.svg?branch=publish)](https://github.com/chrishyze/zblogphp-image/actions/workflows/publish-docker-hub.yml)  
+
+基于最新的 [Z-BlogPHP](https://github.com/zblogcn/zblogphp) 源码构建容器镜像。  
 
 由于每个人对运行环境的需求不同，为保证镜像的通用性和灵活性，仅包含 PHP 运行环境。  
 如需搭配 Nginx、MySQL 等服务，考虑使用 Docker Compose 等容器编排工具。  
@@ -10,7 +12,7 @@
 ### 镜像特性
 
 - 基于 Z-BlogPHP 最新的 Github 源码
-- 基于 PHP 官方镜像，提供 7.4 ~ 8.2 版本
+- 基于 PHP 官方[积极支持版本](https://www.php.net/supported-versions.php)镜像
 - 包含 Composer
 - 提供不同规格的扩展套件（详见下文）
 
@@ -30,7 +32,6 @@
 
 ### Docker 镜像
 
-推荐使用 PHP 8。
 根据所安装扩展的不同，分为 `mysql`、`pgsql`、和 `dev` 三种套件（具体扩展详见下一小节）。  
 
 #### 包含 MySQL 等扩展的镜像  
@@ -38,59 +39,23 @@
 > 默认镜像标签不包含 mysql 字样  
 
 - [8.2-fpm](https://github.com/chrishyze/zblogphp-image/blob/master/dockerfile/8.2/fpm/mysql/Dockerfile),
-  [8.2-cli](https://github.com/chrishyze/zblogphp-image/blob/master/dockerfile/8.2/cli/mysql/Dockerfile),
-  [8.1-fpm](https://github.com/chrishyze/zblogphp-image/blob/master/dockerfile/8.1/fpm/mysql/Dockerfile),
-  [8.1-cli](https://github.com/chrishyze/zblogphp-image/blob/master/dockerfile/8.1/cli/mysql/Dockerfile),
-  [8.0-fpm](https://github.com/chrishyze/zblogphp-image/blob/master/dockerfile/8.0/fpm/mysql/Dockerfile),
-  [8.0-cli](https://github.com/chrishyze/zblogphp-image/blob/master/dockerfile/8.0/cli/mysql/Dockerfile),
-  [7.4-fpm](https://github.com/chrishyze/zblogphp-image/blob/master/dockerfile/7.4/fpm/mysql/Dockerfile),
-  [7.4-cli](https://github.com/chrishyze/zblogphp-image/blob/master/dockerfile/7.4/cli/mysql/Dockerfile)
+  [8.1-fpm](https://github.com/chrishyze/zblogphp-image/blob/master/dockerfile/8.1/fpm/mysql/Dockerfile)
 - [8.2-fpm-alpine](https://github.com/chrishyze/zblogphp-image/blob/master/dockerfile/8.2/fpm-alpine/mysql/Dockerfile),
-  [8.2-cli-alpine](https://github.com/chrishyze/zblogphp-image/blob/master/dockerfile/8.2/cli-alpine/mysql/Dockerfile),
-  **[8.1-fpm-alpine (latest)](https://github.com/chrishyze/zblogphp-image/blob/master/dockerfile/8.1/fpm-alpine/mysql/Dockerfile)**,
-  [8.1-cli-alpine](https://github.com/chrishyze/zblogphp-image/blob/master/dockerfile/8.1/cli-alpine/mysql/Dockerfile),
-  [8.0-fpm-alpine](https://github.com/chrishyze/zblogphp-image/blob/master/dockerfile/8.0/fpm-alpine/mysql/Dockerfile),
-  [8.0-cli-alpine](https://github.com/chrishyze/zblogphp-image/blob/master/dockerfile/8.0/cli-alpine/mysql/Dockerfile),
-  [7.4-fpm-alpine](https://github.com/chrishyze/zblogphp-image/blob/master/dockerfile/7.4/fpm-alpine/mysql/Dockerfile),
-  [7.4-cli-alpine](https://github.com/chrishyze/zblogphp-image/blob/master/dockerfile/7.4/cli-alpine/mysql/Dockerfile)
+  **[8.1-fpm-alpine (latest)](https://github.com/chrishyze/zblogphp-image/blob/master/dockerfile/8.1/fpm-alpine/mysql/Dockerfile)**
 
 #### 包含 PostgreSQL 等扩展的镜像  
 
 - [8.2-fpm-pgsql](https://github.com/chrishyze/zblogphp-image/blob/master/dockerfile/8.2/fpm/pgsql/Dockerfile),
-  [8.2-cli-pgsql](https://github.com/chrishyze/zblogphp-image/blob/master/dockerfile/8.2/cli/pgsql/Dockerfile),
   [8.1-fpm-pgsql](https://github.com/chrishyze/zblogphp-image/blob/master/dockerfile/8.1/fpm/pgsql/Dockerfile),
-  [8.1-cli-pgsql](https://github.com/chrishyze/zblogphp-image/blob/master/dockerfile/8.1/cli/pgsql/Dockerfile),
-  [8.0-fpm-pgsql](https://github.com/chrishyze/zblogphp-image/blob/master/dockerfile/8.0/fpm/pgsql/Dockerfile),
-  [8.0-cli-pgsql](https://github.com/chrishyze/zblogphp-image/blob/master/dockerfile/8.0/cli/pgsql/Dockerfile),
-  [7.4-fpm-pgsql](https://github.com/chrishyze/zblogphp-image/blob/master/dockerfile/7.4/fpm/pgsql/Dockerfile),
-  [7.4-cli-pgsql](https://github.com/chrishyze/zblogphp-image/blob/master/dockerfile/7.4/cli/pgsql/Dockerfile)
 - [8.2-fpm-alpine-pgsql](https://github.com/chrishyze/zblogphp-image/blob/master/dockerfile/8.2/fpm-alpine/pgsql/Dockerfile),
-  [8.2-cli-alpine-pgsql](https://github.com/chrishyze/zblogphp-image/blob/master/dockerfile/8.2/cli-alpine/pgsql/Dockerfile),
-  [8.1-fpm-alpine-pgsql](https://github.com/chrishyze/zblogphp-image/blob/master/dockerfile/8.1/fpm-alpine/pgsql/Dockerfile),
-  [8.1-cli-alpine-pgsql](https://github.com/chrishyze/zblogphp-image/blob/master/dockerfile/8.1/cli-alpine/pgsql/Dockerfile),
-  [8.0-fpm-alpine-pgsql](https://github.com/chrishyze/zblogphp-image/blob/master/dockerfile/8.0/fpm-alpine/pgsql/Dockerfile),
-  [8.0-cli-alpine-pgsql](https://github.com/chrishyze/zblogphp-image/blob/master/dockerfile/8.0/cli-alpine/pgsql/Dockerfile),
-  [7.4-fpm-alpine-pgsql](https://github.com/chrishyze/zblogphp-image/blob/master/dockerfile/7.4/fpm-alpine/pgsql/Dockerfile),
-  [7.4-cli-alpine-pgsql](https://github.com/chrishyze/zblogphp-image/blob/master/dockerfile/7.4/cli-alpine/pgsql/Dockerfile)
+  [8.1-fpm-alpine-pgsql](https://github.com/chrishyze/zblogphp-image/blob/master/dockerfile/8.1/fpm-alpine/pgsql/Dockerfile)
 
 #### 包含大量扩展的开发镜像  
 
 - [8.2-fpm-dev](https://github.com/chrishyze/zblogphp-image/blob/master/dockerfile/8.2/fpm/dev/Dockerfile),
-  [8.2-cli-dev](https://github.com/chrishyze/zblogphp-image/blob/master/dockerfile/8.2/cli/dev/Dockerfile),
   [8.1-fpm-dev](https://github.com/chrishyze/zblogphp-image/blob/master/dockerfile/8.1/fpm/dev/Dockerfile),
-  [8.1-cli-dev](https://github.com/chrishyze/zblogphp-image/blob/master/dockerfile/8.1/cli/dev/Dockerfile),
-  [8.0-fpm-dev](https://github.com/chrishyze/zblogphp-image/blob/master/dockerfile/8.0/fpm/dev/Dockerfile),
-  [8.0-cli-dev](https://github.com/chrishyze/zblogphp-image/blob/master/dockerfile/8.0/cli/dev/Dockerfile),
-  [7.4-fpm-dev](https://github.com/chrishyze/zblogphp-image/blob/master/dockerfile/7.4/fpm/dev/Dockerfile),
-  [7.4-cli-dev](https://github.com/chrishyze/zblogphp-image/blob/master/dockerfile/7.4/cli/dev/Dockerfile)
 - [8.2-fpm-alpine-dev](https://github.com/chrishyze/zblogphp-image/blob/master/dockerfile/8.2/fpm-alpine/dev/Dockerfile),
-  [8.2-cli-alpine-dev](https://github.com/chrishyze/zblogphp-image/blob/master/dockerfile/8.2/cli-alpine/dev/Dockerfile),
-  [8.1-fpm-alpine-dev](https://github.com/chrishyze/zblogphp-image/blob/master/dockerfile/8.1/fpm-alpine/dev/Dockerfile),
-  [8.1-cli-alpine-dev](https://github.com/chrishyze/zblogphp-image/blob/master/dockerfile/8.1/cli-alpine/dev/Dockerfile),
-  [8.0-fpm-alpine-dev](https://github.com/chrishyze/zblogphp-image/blob/master/dockerfile/8.0/fpm-alpine/dev/Dockerfile),
-  [8.0-cli-alpine-dev](https://github.com/chrishyze/zblogphp-image/blob/master/dockerfile/8.0/cli-alpine/dev/Dockerfile),
-  [7.4-fpm-alpine-dev](https://github.com/chrishyze/zblogphp-image/blob/master/dockerfile/7.4/fpm-alpine/dev/Dockerfile),
-  [7.4-cli-alpine-dev](https://github.com/chrishyze/zblogphp-image/blob/master/dockerfile/7.4/cli-alpine/dev/Dockerfile)
+  [8.1-fpm-alpine-dev](https://github.com/chrishyze/zblogphp-image/blob/master/dockerfile/8.1/fpm-alpine/dev/Dockerfile)
 
 #### 镜像文件结构  
 

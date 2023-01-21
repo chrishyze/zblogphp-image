@@ -1,16 +1,12 @@
 {
     "php": {
         "versions": [
-            "7.4",
-            "8.0",
             "8.1",
             "8.2"
         ],
         "tags": [
             "fpm",
-            "fpm-alpine",
-            "cli",
-            "cli-alpine"
+            "fpm-alpine"
         ],
         "packages": {
             "debian": [],
