@@ -26,22 +26,52 @@ use ZblogPhpImage\Enum\PhpExtensionSuite;
 )]
 class GeneratorPublishCommand extends Command
 {
-    protected function configure(): void
+    protected string $projectDir;
+
+    protected array $publishConfig;
+
+    protected array $extensionSuite;
+
+    protected function initialize(InputInterface $input, OutputInterface $output): void
     {
+        $output->writeln(['', 'Z-BlogPHP Image Generator', 'Generating from preset config...', '']);
+
+        $this->projectDir = dirname(__DIR__, 2);
+        $fs = new Filesystem();
+        if ($fs->exists($this->projectDir.'/dockerfile')) {
+            $fs->remove($this->projectDir.'/dockerfile');
+        }
+        $fs->mkdir($this->projectDir.'/dockerfile', 0777);
+
+        $this->extensionSuite = [
+            PhpExtensionSuite::MySql->value => PhpExtensionSuite::MySql->extensions(),
+            PhpExtensionSuite::PgSql->value => PhpExtensionSuite::PgSql->extensions(),
+            PhpExtensionSuite::Dev->value => PhpExtensionSuite::Dev->extensions(),
+        ];
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $output->writeln(['', 'Z-BlogPHP Image Generator', 'Generating from preset config...', '']);
-
-        $projectDir = dirname(__DIR__, 2);
-        $fs = new Filesystem();
-        if ($fs->exists($projectDir.'/dockerfile')) {
-            $fs->remove($projectDir.'/dockerfile');
+        $result = $this->initializeConfig($input, $output);
+        if ($result !== Command::SUCCESS) {
+            return $result;
         }
-        $fs->mkdir($projectDir.'/dockerfile', 0777);
 
-        $configPath = $projectDir.'/config/generate-publish.json';
+        $loader = new \Twig\Loader\FilesystemLoader($this->projectDir.'/template');
+        $twig = new \Twig\Environment($loader);
+
+        $workflows = $this->generateDockerfile($output, $twig);
+
+        $this->generateWorkflow($output, $twig, $workflows);
+
+        $output->writeln(['', 'Done.']);
+
+        return Command::SUCCESS;
+    }
+
+    protected function initializeConfig(InputInterface $input, OutputInterface $output): int
+    {
+        $configPath = $this->projectDir.'/config/generate-publish.json';
         if (!is_readable($configPath)) {
             $output->writeln('Config file '.$configPath.' is not readable');
 
@@ -53,78 +83,109 @@ class GeneratorPublishCommand extends Command
             if (empty($configRaw)) {
                 throw new \Exception();
             }
-            $config = json_decode($configRaw, true);
+            $this->publishConfig = json_decode($configRaw, true);
         } catch (\Throwable $e) {
             $output->writeln('Invalid config');
 
             return Command::FAILURE;
         }
 
-        $presetExtensions = [
-            PhpExtensionSuite::MySql->value => PhpExtensionSuite::MySql->extensions(),
-            PhpExtensionSuite::PgSql->value => PhpExtensionSuite::PgSql->extensions(),
-            PhpExtensionSuite::Dev->value => PhpExtensionSuite::Dev->extensions(),
-        ];
-        foreach (array_keys($presetExtensions) as $key) {
-            if (!isset($config[$key]) || !is_array($config[$key])) {
+        foreach (array_keys($this->extensionSuite) as $key) {
+            if (!isset($this->publishConfig[$key]) || !is_array($this->publishConfig[$key])) {
                 continue;
             }
-            if (empty($config[$key])) {
+            if (empty($this->publishConfig[$key])) {
                 $output->writeln("Extension in config can not be empty: [{$key}]");
 
                 return Command::FAILURE;
             }
-            $presetExtensions[$key] = $config[$key];
+            $this->extensionSuite[$key] = $this->publishConfig[$key];
         }
-        if (!isset($config['packages']['debian']) || !is_array($config['packages']['debian'])) {
-            $config['packages']['debian'] = [];
+        if (!isset($this->publishConfig['packages']['debian']) || !is_array($this->publishConfig['packages']['debian'])) {
+            $this->publishConfig['packages']['debian'] = [];
         }
-        if (!isset($config['packages']['alpine']) || !is_array($config['packages']['alpine'])) {
-            $config['packages']['alpine'] = [];
+        if (!isset($this->publishConfig['packages']['alpine']) || !is_array($this->publishConfig['packages']['alpine'])) {
+            $this->publishConfig['packages']['alpine'] = [];
         }
-
-        $loader = new \Twig\Loader\FilesystemLoader($projectDir.'/template');
-        $twig = new \Twig\Environment($loader);
-        foreach ($config['php']['versions'] as $v) {
-            foreach ($config['php']['tags'] as $t) {
-                foreach ($presetExtensions as $s => $e) {
-                    $this->generateDockerfile($output, $projectDir, $config['packages'], $twig, $v, $t, $s, $e);
-                }
-            }
-        }
-
-        $output->writeln(['', 'Done.']);
 
         return Command::SUCCESS;
     }
 
-    protected function generateDockerfile(OutputInterface $output, string $projectDir, array $packageConf, \Twig\Environment $twig, string $phpVer, string $phpTag, string $suite, array $extensions): void
+    protected function generateDockerfile(OutputInterface $output, \Twig\Environment $twig): array
     {
-        $dir = "{$projectDir}/dockerfile/{$phpVer}/{$phpTag}/{$suite}";
-        if (!file_exists($dir)) {
-            mkdir($dir, 0777, true);
+        $workflows = [];
+        $platforms = ['linux/amd64', 'linux/arm64/v8', 'linux/arm/v7'];
+        $excludeArmv7Tags = ['8.2-fpm', '8.2-cli', '8.1-fpm', '8.1-cli'];
+
+        foreach ($this->publishConfig['php']['versions'] as $phpVer) {
+            foreach ($this->publishConfig['php']['tags'] as $phpTag) {
+                $phpImageTag = "{$phpVer}-{$phpTag}";
+                $platformsTemp = $platforms;
+                if (in_array('{$phpImageTag}', $excludeArmv7Tags)) {
+                    $platformsTemp = array_filter($platformsTemp, function ($platform): bool {
+                        return strpos($platform, 'arm/v7') === false;
+                    });
+                }
+                $workflow = [
+                    'file' => str_replace('.', '', "publish-{$phpImageTag}"),
+                    'name' => "Publish {$phpImageTag}",
+                    'platforms' => implode(',', $platformsTemp),
+                    'jobs' => [],
+                ];
+
+                foreach ($this->extensionSuite as $suite => $extensions) {
+                    $dir = "{$this->projectDir}/dockerfile/{$phpVer}/{$phpTag}/{$suite}";
+                    $os = strpos($phpTag, 'alpine') !== false ? 'alpine' : 'debian';
+                    $packages = '';
+
+                    if (strpos($phpTag, 'alpine') !== false) {
+                        if (!empty($this->publishConfig['packages']['alpine'])) {
+                            $packages = implode(' ', $this->publishConfig['packages']['alpine']);
+                        }
+                    } else {
+                        if (!empty($this->publishConfig['packages']['debian'])) {
+                            $packages = implode(' ', $this->publishConfig['packages']['debian']);
+                        }
+                    }
+
+                    $content = $twig->render("Dockerfile.{$os}.twig", [
+                        'tag' => $phpImageTag,
+                        'packages' => $packages,
+                        'extensions' => implode(' ', $extensions),
+                    ]);
+                    $path = $dir.'/Dockerfile';
+                    if (!file_exists($dir)) {
+                        mkdir($dir, 0777, true);
+                    }
+                    file_put_contents($path, $content);
+                    $output->writeln('output: '.$path);
+
+                    $thisImageTags = str_replace('-mysql', '', "{$phpImageTag}-{$suite}");
+                    if ($thisImageTags === '8.1-fpm-alpine') {
+                        $thisImageTags .= ',latest';
+                    }
+                    $workflow['jobs'][] = [
+                        'name' => str_replace(['.', '-'], ['', '_'], "publish_{$phpImageTag}_{$suite}"),
+                        'tags' => $thisImageTags,
+                        'dockerfile' => "dockerfile/{$phpVer}/{$phpTag}/{$suite}/Dockerfile",
+                    ];
+                }
+
+                $workflows[] = $workflow;
+            }
         }
 
-        $os = strpos($phpTag, 'alpine') !== false ? 'alpine' : 'debian';
-        $packages = '';
-        if (strpos($phpTag, 'alpine') !== false) {
-            if (!empty($packageConf['alpine'])) {
-                $packages = implode(' ', $packageConf['alpine']);
-            }
-        } else {
-            if (!empty($packageConf['debian'])) {
-                $packages = implode(' ', $packageConf['debian']);
-            }
+        return $workflows;
+    }
+
+    protected function generateWorkflow(OutputInterface $output, \Twig\Environment $twig, array $workflows): void
+    {
+        $output->writeln(['', 'Generating Github Workflow files...']);
+        foreach ($workflows as $workflow) {
+            $content = $twig->render('publish-docker-hub.twig', $workflow);
+            $path = "{$this->projectDir}/.github/workflows/{$workflow['file']}.yml";
+            file_put_contents($path, $content);
+            $output->writeln('output: '.$path);
         }
-
-        $content = $twig->render("Dockerfile.{$os}.twig", [
-            'tag' => "{$phpVer}-{$phpTag}",
-            'packages' => $packages,
-            'extensions' => implode(' ', $extensions),
-        ]);
-        $path = $dir.'/Dockerfile';
-        file_put_contents($path, $content);
-
-        $output->writeln('output: '.$path);
     }
 }

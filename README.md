@@ -1,7 +1,5 @@
 # Z-BlogPHP Image
 
-[![Publish to Docker Hub](https://github.com/chrishyze/zblogphp-image/actions/workflows/publish-docker-hub.yml/badge.svg?branch=publish)](https://github.com/chrishyze/zblogphp-image/actions/workflows/publish-docker-hub.yml)  
-
 基于最新的 [Z-BlogPHP](https://github.com/zblogcn/zblogphp) 源码构建容器镜像。  
 
 由于每个人对运行环境的需求不同，为保证镜像的通用性和灵活性，仅包含 PHP 运行环境。  
@@ -12,8 +10,8 @@
 ### 镜像特性
 
 - 基于 Z-BlogPHP 最新的 Github 源码
-- 基于 PHP 官方[积极支持版本](https://www.php.net/supported-versions.php)镜像
-- 包含 Composer
+- 基于 PHP 官方[安全支持版本](https://www.php.net/supported-versions.php)和 PHP 7.4 镜像
+- 包含 Composer 工具
 - 提供不同规格的扩展套件（详见下文）
 
 ### 本项目特性
@@ -33,6 +31,19 @@
 ### Docker 镜像
 
 根据所安装扩展的不同，分为 `mysql`、`pgsql`、和 `dev` 三种套件（具体扩展详见下一小节）。  
+
+### 构建状态
+
+| Image Tag              | Platform                | Status |
+| ---------------------- | ----------------------- | ------ |
+| 8.2-fpm                | amd64, arm64v8          | [![8.2-fpm](https://github.com/chrishyze/zblogphp-image/actions/workflows/publish-82-fpm.yml/badge.svg?branch=publish)](https://github.com/chrishyze/zblogphp-image/actions/workflows/publish-82-fpm.yml) |
+| 8.2-fpm-alpine         | amd64, arm64v8, arm32v7 | [![8.2-fpm-alpine](https://github.com/chrishyze/zblogphp-image/actions/workflows/publish-82-fpm-alpine.yml/badge.svg?branch=publish)](https://github.com/chrishyze/zblogphp-image/actions/workflows/publish-82-fpm-alpine.yml) |
+| 8.1-fpm                | amd64, arm64v8          | [![8.1-fpm](https://github.com/chrishyze/zblogphp-image/actions/workflows/publish-81-fpm.yml/badge.svg?branch=publish)](https://github.com/chrishyze/zblogphp-image/actions/workflows/publish-81-fpm.yml) |
+| latest, 8.1-fpm-alpine | amd64, arm64v8, arm32v7 | [![8.1-fpm-alpine](https://github.com/chrishyze/zblogphp-image/actions/workflows/publish-81-fpm-alpine.yml/badge.svg?branch=publish)](https://github.com/chrishyze/zblogphp-image/actions/workflows/publish-81-fpm-alpine.yml) |
+| 8.0-fpm                | amd64, arm64v8, arm32v7 | [![8.0-fpm](https://github.com/chrishyze/zblogphp-image/actions/workflows/publish-80-fpm.yml/badge.svg?branch=publish)](https://github.com/chrishyze/zblogphp-image/actions/workflows/publish-80-fpm.yml) |
+| 8.0-fpm-alpine         | amd64, arm64v8, arm32v7 | [![8.0-fpm-alpine](https://github.com/chrishyze/zblogphp-image/actions/workflows/publish-80-fpm-alpine.yml/badge.svg?branch=publish)](https://github.com/chrishyze/zblogphp-image/actions/workflows/publish-80-fpm-alpine.yml) |
+| 7.4-fpm                | amd64, arm64v8, arm32v7 | [![7.4-fpm](https://github.com/chrishyze/zblogphp-image/actions/workflows/publish-74-fpm.yml/badge.svg?branch=publish)](https://github.com/chrishyze/zblogphp-image/actions/workflows/publish-74-fpm.yml) |
+| 7.4-fpm-alpine         | amd64, arm64v8, arm32v7 | [![7.4-fpm-alpine](https://github.com/chrishyze/zblogphp-image/actions/workflows/publish-74-fpm-alpine.yml/badge.svg?branch=publish)](https://github.com/chrishyze/zblogphp-image/actions/workflows/publish-74-fpm-alpine.yml) |
 
 #### 包含 MySQL 等扩展的镜像  
 
