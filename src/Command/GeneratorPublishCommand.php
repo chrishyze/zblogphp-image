@@ -16,6 +16,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
+use ZblogPhpImage\Enum\PhpExtensionSuite;
 
 #[AsCommand(
     name: 'generator:publish',
@@ -60,11 +61,9 @@ class GeneratorPublishCommand extends Command
         }
 
         $presetExtensions = [
-            'mysql' => ['gd', 'imagick', 'mysqli', 'opcache', 'pdo_mysql', 'redis'],
-            'pgsql' => ['gd', 'imagick', 'opcache', 'pdo_pgsql', 'pgsql', 'redis'],
-            'dev' => ['amqp', 'apcu', 'bcmath', 'bz2', 'csv', 'event', 'exif', 'gd', 'gnupg', 'grpc', 'imagick',
-                'imap', 'ldap', 'memcached', 'mongodb', 'mysqli', 'oauth', 'opcache', 'pcntl', 'pdo_mysql',
-                'pdo_pgsql', 'pgsql', 'protobuf', 'redis', 'sockets', 'ssh2', 'swoole', 'xdebug', 'yaml', 'zip', 'zstd'],
+            PhpExtensionSuite::MySql->value => PhpExtensionSuite::MySql->extensions(),
+            PhpExtensionSuite::PgSql->value => PhpExtensionSuite::PgSql->extensions(),
+            PhpExtensionSuite::Dev->value => PhpExtensionSuite::Dev->extensions(),
         ];
         foreach (array_keys($presetExtensions) as $key) {
             if (!isset($config[$key]) || !is_array($config[$key])) {
