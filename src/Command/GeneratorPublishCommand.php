@@ -16,6 +16,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
+use ZblogPhpImage\Enum\PhpExtension;
 use ZblogPhpImage\Enum\PhpExtensionSuite;
 
 #[AsCommand(
@@ -121,7 +122,7 @@ class GeneratorPublishCommand extends Command
             foreach ($this->publishConfig['php']['tags'] as $phpTag) {
                 $phpImageTag = "{$phpVer}-{$phpTag}";
                 $platformsTemp = $platforms;
-                if (in_array('{$phpImageTag}', $excludeArmv7Tags)) {
+                if (in_array($phpImageTag, $excludeArmv7Tags)) {
                     $platformsTemp = array_filter($platformsTemp, function ($platform): bool {
                         return strpos($platform, 'arm/v7') === false;
                     });
@@ -148,10 +149,24 @@ class GeneratorPublishCommand extends Command
                         }
                     }
 
+                    $extraRunCommands = ['cp /usr/local/etc/php/php.ini-production /usr/local/etc/php/php.ini'];
+                    if ($suite === 'dev') {
+                        $extraRunCommands[0] = 'cp /usr/local/etc/php/php.ini-development /usr/local/etc/php/php.ini';
+                    }
+
+                    $extensionEnableConf = 'echo -e \'';
+                    foreach (PhpExtension::cases() as $extCase) {
+                        if (in_array($extCase->value, $extensions)) {
+                            $extensionEnableConf .= '\\n'.$extCase->enableConf().'\\n';
+                        }
+                    }
+                    $extensionEnableConf .= '\' >> /usr/local/etc/php/php.ini';
+                    $extraRunCommands[] = $extensionEnableConf;
+
                     $content = $twig->render("Dockerfile.{$os}.twig", [
                         'tag' => $phpImageTag,
                         'packages' => $packages,
-                        'extensions' => implode(' ', $extensions),
+                        'extra_run_cmds' => $extraRunCommands,
                     ]);
                     $path = $dir.'/Dockerfile';
                     if (!file_exists($dir)) {

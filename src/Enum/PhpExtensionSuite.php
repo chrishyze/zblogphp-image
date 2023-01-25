@@ -24,9 +24,9 @@ enum PhpExtensionSuite: string
         return match ($this) {
             self::MySql => ['gd', 'imagick', 'mysqli', 'opcache', 'pdo_mysql', 'redis'],
             self::PgSql => ['gd', 'imagick', 'opcache', 'pdo_pgsql', 'pgsql', 'redis'],
-            self::Dev => ['amqp', 'apcu', 'bcmath', 'bz2', 'csv', 'event', 'exif', 'gd', 'gnupg', 'grpc', 'imagick',
-                'imap', 'ldap', 'memcached', 'mongodb', 'mysqli', 'oauth', 'opcache', 'pcntl', 'pdo_mysql', 'pdo_pgsql',
-                'pgsql', 'protobuf', 'redis', 'sockets', 'ssh2', 'swoole', 'xdebug', 'yaml', 'zip', 'zstd'],
+            self::Dev => ['apcu', 'bcmath', 'bz2', 'event', 'exif', 'gd', 'gnupg', 'imagick',
+                'memcached', 'mongodb', 'mysqli', 'opcache', 'pcntl', 'pdo_mysql', 'pdo_pgsql',
+                'pgsql', 'protobuf', 'redis', 'sockets', 'ssh2', 'swoole', 'xdebug', 'zip', 'zstd'],
         };
     }
 

@@ -28,7 +28,7 @@ jobs:
           file: dockerfile/8.2/fpm/mysql/Dockerfile
           push: true
           tags: 8.2-fpm
-          platforms: linux/amd64,linux/arm64/v8,linux/arm/v7
+          platforms: linux/amd64,linux/arm64/v8
   publish_82_fpm_pgsql:
     runs-on: ubuntu-latest
     permissions:
@@ -51,7 +51,7 @@ jobs:
           file: dockerfile/8.2/fpm/pgsql/Dockerfile
           push: true
           tags: 8.2-fpm-pgsql
-          platforms: linux/amd64,linux/arm64/v8,linux/arm/v7
+          platforms: linux/amd64,linux/arm64/v8
   publish_82_fpm_dev:
     runs-on: ubuntu-latest
     permissions:
@@ -74,4 +74,4 @@ jobs:
           file: dockerfile/8.2/fpm/dev/Dockerfile
           push: true
           tags: 8.2-fpm-dev
-          platforms: linux/amd64,linux/arm64/v8,linux/arm/v7
+          platforms: linux/amd64,linux/arm64/v8

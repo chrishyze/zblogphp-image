@@ -1,9 +1,7 @@
-FROM php:8.2-fpm-alpine
+FROM chrishyze/extended-php:8.2-fpm-alpine
 
 LABEL version="1.0"
 LABEL org.opencontainers.image.authors="chrishyze@gmail.com"
-
-COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/local/bin/
 
 RUN set -ex &&\
     apk update &&\
@@ -16,7 +14,7 @@ RUN set -ex &&\
     mv /var/www/html /var/www/zblogphp &&\
     unzip -o /usr/local/src/zblogphp.zip -d /var/www/zblogphp &&\
     chown -R www-data:www-data /var/www/zblogphp &&\
-    chmod -R 0755 /var/www/zblogphp
-RUN install-php-extensions amqp apcu bcmath bz2 csv event exif gd gnupg grpc imagick imap ldap memcached mongodb mysqli oauth opcache pcntl pdo_mysql pdo_pgsql pgsql protobuf redis sockets ssh2 swoole xdebug yaml zip zstd
-
+    chmod -R 0755 /var/www/zblogphp &&\
+    cp /usr/local/etc/php/php.ini-development /usr/local/etc/php/php.ini &&\
+    echo -e '\nextension=apcu.so\n\nextension=bcmath.so\n\nextension=bz2.so\n\nextension=event.so\n\nextension=exif.so\n\nextension=gd.so\n\nextension=gnupg.so\n\nextension=imagick.so\n\nextension=memcached.so\n\nextension=mongodb.so\n\nextension=mysqli.so\n\nextension=opcache.so\n\nextension=pcntl.so\n\nextension=pdo_mysql.so\n\nextension=pdo_pgsql.so\n\nextension=pgsql.so\n\nextension=protobuf.so\n\nextension=redis.so\n\nextension=sockets.so\n\nextension=ssh2.so\n\n#extension=swoole.so\n\nzend_extension=xdebug.so\n\nextension=zip.so\n\nextension=zstd.so\n' >> /usr/local/etc/php/php.ini
 WORKDIR /var/www/zblogphp

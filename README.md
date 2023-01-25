@@ -10,8 +10,9 @@
 ### 镜像特性
 
 - 基于 Z-BlogPHP 最新的 Github 源码
-- 基于 PHP 官方[安全支持版本](https://www.php.net/supported-versions.php)和 PHP 7.4 镜像
+- 提供 PHP 7.4 ～ 8.2 版本
 - 包含 Composer 工具
+- 支持 AMD 64 和 ARM 架构
 - 提供不同规格的扩展套件（详见下文）
 
 ### 本项目特性
@@ -45,28 +46,38 @@
 | 7.4-fpm                | amd64, arm64v8, arm32v7 | [![7.4-fpm](https://github.com/chrishyze/zblogphp-image/actions/workflows/publish-74-fpm.yml/badge.svg?branch=publish)](https://github.com/chrishyze/zblogphp-image/actions/workflows/publish-74-fpm.yml) |
 | 7.4-fpm-alpine         | amd64, arm64v8, arm32v7 | [![7.4-fpm-alpine](https://github.com/chrishyze/zblogphp-image/actions/workflows/publish-74-fpm-alpine.yml/badge.svg?branch=publish)](https://github.com/chrishyze/zblogphp-image/actions/workflows/publish-74-fpm-alpine.yml) |
 
-#### 包含 MySQL 等扩展的镜像  
-
-> 默认镜像标签不包含 mysql 字样  
+#### 包含 MySQL 等扩展的镜像（默认镜像）  
 
 - [8.2-fpm](https://github.com/chrishyze/zblogphp-image/blob/master/dockerfile/8.2/fpm/mysql/Dockerfile),
-  [8.1-fpm](https://github.com/chrishyze/zblogphp-image/blob/master/dockerfile/8.1/fpm/mysql/Dockerfile)
+  [8.1-fpm](https://github.com/chrishyze/zblogphp-image/blob/master/dockerfile/8.1/fpm/mysql/Dockerfile),
+  [8.0-fpm](https://github.com/chrishyze/zblogphp-image/blob/master/dockerfile/8.0/fpm/mysql/Dockerfile),
+  [7.4-fpm](https://github.com/chrishyze/zblogphp-image/blob/master/dockerfile/7.4/fpm/mysql/Dockerfile)
 - [8.2-fpm-alpine](https://github.com/chrishyze/zblogphp-image/blob/master/dockerfile/8.2/fpm-alpine/mysql/Dockerfile),
-  **[8.1-fpm-alpine (latest)](https://github.com/chrishyze/zblogphp-image/blob/master/dockerfile/8.1/fpm-alpine/mysql/Dockerfile)**
+  **[8.1-fpm-alpine (latest)](https://github.com/chrishyze/zblogphp-image/blob/master/dockerfile/8.1/fpm-alpine/mysql/Dockerfile)**,
+  [8.0-fpm-alpine](https://github.com/chrishyze/zblogphp-image/blob/master/dockerfile/8.0/fpm-alpine/mysql/Dockerfile),
+  [7.4-fpm-alpine](https://github.com/chrishyze/zblogphp-image/blob/master/dockerfile/7.4/fpm-alpine/mysql/Dockerfile)
 
 #### 包含 PostgreSQL 等扩展的镜像  
 
 - [8.2-fpm-pgsql](https://github.com/chrishyze/zblogphp-image/blob/master/dockerfile/8.2/fpm/pgsql/Dockerfile),
   [8.1-fpm-pgsql](https://github.com/chrishyze/zblogphp-image/blob/master/dockerfile/8.1/fpm/pgsql/Dockerfile),
+  [8.0-fpm-pgsql](https://github.com/chrishyze/zblogphp-image/blob/master/dockerfile/8.0/fpm/pgsql/Dockerfile),
+  [7.4-fpm-pgsql](https://github.com/chrishyze/zblogphp-image/blob/master/dockerfile/7.4/fpm/pgsql/Dockerfile)
 - [8.2-fpm-alpine-pgsql](https://github.com/chrishyze/zblogphp-image/blob/master/dockerfile/8.2/fpm-alpine/pgsql/Dockerfile),
-  [8.1-fpm-alpine-pgsql](https://github.com/chrishyze/zblogphp-image/blob/master/dockerfile/8.1/fpm-alpine/pgsql/Dockerfile)
+  [8.1-fpm-alpine-pgsql](https://github.com/chrishyze/zblogphp-image/blob/master/dockerfile/8.1/fpm-alpine/pgsql/Dockerfile),
+  [8.0-fpm-alpine-pgsql](https://github.com/chrishyze/zblogphp-image/blob/master/dockerfile/8.0/fpm-alpine/pgsql/Dockerfile),
+  [7.4-fpm-alpine-pgsql](https://github.com/chrishyze/zblogphp-image/blob/master/dockerfile/7.4/fpm-alpine/pgsql/Dockerfile)
 
 #### 包含大量扩展的开发镜像  
 
 - [8.2-fpm-dev](https://github.com/chrishyze/zblogphp-image/blob/master/dockerfile/8.2/fpm/dev/Dockerfile),
   [8.1-fpm-dev](https://github.com/chrishyze/zblogphp-image/blob/master/dockerfile/8.1/fpm/dev/Dockerfile),
+  [8.0-fpm-dev](https://github.com/chrishyze/zblogphp-image/blob/master/dockerfile/8.0/fpm/dev/Dockerfile),
+  [7.4-fpm-dev](https://github.com/chrishyze/zblogphp-image/blob/master/dockerfile/7.4/fpm/dev/Dockerfile)
 - [8.2-fpm-alpine-dev](https://github.com/chrishyze/zblogphp-image/blob/master/dockerfile/8.2/fpm-alpine/dev/Dockerfile),
-  [8.1-fpm-alpine-dev](https://github.com/chrishyze/zblogphp-image/blob/master/dockerfile/8.1/fpm-alpine/dev/Dockerfile)
+  [8.1-fpm-alpine-dev](https://github.com/chrishyze/zblogphp-image/blob/master/dockerfile/8.1/fpm-alpine/dev/Dockerfile),
+  [8.0-fpm-alpine-dev](https://github.com/chrishyze/zblogphp-image/blob/master/dockerfile/8.0/fpm-alpine/dev/Dockerfile),
+  [7.4-fpm-alpine-dev](https://github.com/chrishyze/zblogphp-image/blob/master/dockerfile/7.4/fpm-alpine/dev/Dockerfile),
 
 #### 镜像文件结构  
 
@@ -85,23 +96,17 @@ php bin/zbpimage generator:publish
 
 |           | mysql   | pgsql   | dev\*   |
 | --------- | ------- | ------- | ------- |
-| amqp      |         |         | ✓       |
 | apcu      |         |         | ✓       |
 | bcmath    |         |         | ✓       |
 | bz2       |         |         | ✓       |
-| csv       |         |         | ✓       |
 | event     |         |         | ✓       |
 | exif      |         |         | ✓       |
 | gd        | ✓       | ✓       | ✓       |
 | gnupg     |         |         | ✓       |
-| grpc      |         |         | ✓       |
 | imagick   | ✓       | ✓       | ✓       |
-| imap      |         |         | ✓       |
-| ldap      |         |         | ✓       |
 | memcached |         |         | ✓       |
 | mongodb   |         |         | ✓       |
 | mysqli    | ✓       |         | ✓       |
-| oauth     |         |         | ✓       |
 | opcache   | ✓       | ✓       | ✓       |
 | pcntl     |         |         | ✓       |
 | pdo_mysql | ✓       |         | ✓       |
@@ -111,29 +116,26 @@ php bin/zbpimage generator:publish
 | redis     | ✓       | ✓       | ✓       |
 | sockets   |         |         | ✓       |
 | ssh2      |         |         | ✓       |
-| swoole    |         |         | ✓       |
+| swoole    |         |         | ✓\*\*   |
 | xdebug    |         |         | ✓       |
-| yaml      |         |         | ✓       |
 | zip       |         |         | ✓       |
 | zstd      |         |         | ✓       |
 
-> \* `dev` 套件仅建议开发人员使用。  
+> \* `dev` 套件仅建议开发人员使用  
+> \*\* 因 `swoole` 扩展与 `xdebug` 扩展存在一定的冲突，默认不启用  
+> `mysql` 与 `pgsql` 套件其实都包含有 `dev` 套件的所有扩展，只是没有启用，如有需要可以通过 `/usr/local/etc/php/php.ini` 启用
 
 ### 自定义镜像
 
 #### 方案一
 
-最简单且常用的办法，就是在镜像之上再自行构建：  
+最简单且常用的办法，就是在本镜像之上再自行构建：  
 
 ```dockerfile
 FROM chrishyze/zblogphp:latest
 
 RUN 自定义构建步骤...
 ```
-
-#### 方案二
-
-使用本项目，修改配置文件 `config/generate-publish.json` 以生成自定义 PHP 版本和扩展套件的 Dockerfile。  
 
 ## License
 

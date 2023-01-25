@@ -1,9 +1,7 @@
-FROM php:{{ tag }}
+FROM chrishyze/extended-php:{{ tag }}
 
 LABEL version="1.0"
 LABEL org.opencontainers.image.authors="chrishyze@gmail.com"
-
-COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/local/bin/
 
 RUN set -ex &&\
     apk update &&\
@@ -16,7 +14,10 @@ RUN set -ex &&\
     mv /var/www/html /var/www/zblogphp &&\
     unzip -o /usr/local/src/zblogphp.zip -d /var/www/zblogphp &&\
     chown -R www-data:www-data /var/www/zblogphp &&\
-    chmod -R 0755 /var/www/zblogphp
-RUN install-php-extensions {{ extensions }}
+    chmod -R 0755 /var/www/zblogphp &&\
+{% for cmd in extra_run_cmds %}
+    {{ cmd|raw }}{% if not loop.last %} &&\
+{% endif %}
+{% endfor %}
 
 WORKDIR /var/www/zblogphp

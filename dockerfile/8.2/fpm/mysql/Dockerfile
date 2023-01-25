@@ -1,9 +1,7 @@
-FROM php:8.2-fpm
+FROM chrishyze/extended-php:8.2-fpm
 
 LABEL version="1.0"
 LABEL org.opencontainers.image.authors="chrishyze@gmail.com"
-
-COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/local/bin/
 
 RUN set -ex &&\
     apt-get update &&\
@@ -17,7 +15,7 @@ RUN set -ex &&\
     mv /var/www/html /var/www/zblogphp &&\
     unzip -o /usr/local/src/zblogphp.zip -d /var/www/zblogphp &&\
     chown -R www-data:www-data /var/www/zblogphp &&\
-    chmod -R 0755 /var/www/zblogphp
-RUN install-php-extensions gd imagick mysqli opcache pdo_mysql redis
-
+    chmod -R 0755 /var/www/zblogphp &&\
+    cp /usr/local/etc/php/php.ini-production /usr/local/etc/php/php.ini &&\
+    echo -e '\nextension=gd.so\n\nextension=imagick.so\n\nextension=mysqli.so\n\nextension=opcache.so\n\nextension=pdo_mysql.so\n\nextension=redis.so\n' >> /usr/local/etc/php/php.ini
 WORKDIR /var/www/zblogphp
