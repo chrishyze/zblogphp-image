@@ -12,6 +12,8 @@ jobs:
       packages: write
       contents: read
     steps:
+      - name: Check out the repo
+        uses: actions/checkout@v3
       - name: Login to Docker Hub
         uses: docker/login-action@v2
         with:
@@ -25,9 +27,9 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: .
-          file: dockerfile/8.0/fpm/mysql/Dockerfile
+          file: "dockerfile/8.0/fpm/mysql/Dockerfile"
           push: true
-          tags: 8.0-fpm
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/zblogphp:8.0-fpm
           platforms: linux/amd64,linux/arm64/v8,linux/arm/v7
   publish_80_fpm_pgsql:
     runs-on: ubuntu-latest
@@ -35,6 +37,8 @@ jobs:
       packages: write
       contents: read
     steps:
+      - name: Check out the repo
+        uses: actions/checkout@v3
       - name: Login to Docker Hub
         uses: docker/login-action@v2
         with:
@@ -48,9 +52,9 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: .
-          file: dockerfile/8.0/fpm/pgsql/Dockerfile
+          file: "dockerfile/8.0/fpm/pgsql/Dockerfile"
           push: true
-          tags: 8.0-fpm-pgsql
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/zblogphp:8.0-fpm-pgsql
           platforms: linux/amd64,linux/arm64/v8,linux/arm/v7
   publish_80_fpm_dev:
     runs-on: ubuntu-latest
@@ -58,6 +62,8 @@ jobs:
       packages: write
       contents: read
     steps:
+      - name: Check out the repo
+        uses: actions/checkout@v3
       - name: Login to Docker Hub
         uses: docker/login-action@v2
         with:
@@ -71,7 +77,7 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: .
-          file: dockerfile/8.0/fpm/dev/Dockerfile
+          file: "dockerfile/8.0/fpm/dev/Dockerfile"
           push: true
-          tags: 8.0-fpm-dev
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/zblogphp:8.0-fpm-dev
           platforms: linux/amd64,linux/arm64/v8,linux/arm/v7

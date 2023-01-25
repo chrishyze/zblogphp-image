@@ -175,9 +175,9 @@ class GeneratorPublishCommand extends Command
                     file_put_contents($path, $content);
                     $output->writeln('output: '.$path);
 
-                    $thisImageTags = str_replace('-mysql', '', "{$phpImageTag}-{$suite}");
-                    if ($thisImageTags === '8.1-fpm-alpine') {
-                        $thisImageTags .= ',latest';
+                    $thisImageTags = '${{ secrets.DOCKERHUB_USERNAME }}/zblogphp:'.str_replace('-mysql', '', "{$phpImageTag}-{$suite}");
+                    if ("{$phpImageTag}" === '8.1-fpm-alpine') {
+                        $thisImageTags .= ',${{ secrets.DOCKERHUB_USERNAME }}/zblogphp:latest';
                     }
                     $workflow['jobs'][] = [
                         'name' => str_replace(['.', '-'], ['', '_'], "publish_{$phpImageTag}_{$suite}"),
